@@ -17,11 +17,24 @@ jobs:
   pro-components:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: modify commit id
+        run: |
+          echo "release $(date +"%Y.%m.%d_%H_%M_%S")" >> ./release.md
+
+      - name: commit updated files
+        uses: stefanzweifel/git-auto-commit-action@v2.4.1
+        with:
+          commit_message: 'new release via Github Actions'
+          branch: main
+
+      - name: Checkout mirror repo
         run: |
           git clone https://github.com/ant-design/pro-components.git --depth=1
 
-      - name: zip source
+      - name: zip mirror repo source
         uses: montudor/action-zip@v1
         with:
           args: zip -qq -r pro-components-source.zip ./pro-components
