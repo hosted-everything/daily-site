@@ -23,7 +23,7 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
-      - run: bun install
+      - run: cd ant-design && ls -la && bun install
 
       - name: add content path
         run: |
