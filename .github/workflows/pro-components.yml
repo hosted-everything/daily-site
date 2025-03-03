@@ -1,4 +1,4 @@
-name: Deploy Site
+name: pro-components
 
 on:
   schedule:
