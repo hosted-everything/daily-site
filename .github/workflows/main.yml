@@ -27,34 +27,34 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/manifest: {}/runtimePublicPath: {}, manifest: {basePath: "\/mirror\/ant-design-5\/",}, base: "\/mirror\/ant-design-5\/", publicPath: "\/mirror\/ant-design-5\/"/' .dumirc.ts
-          sed -i 's/"devtool": false/"devtool": false,  "publicPath": "\/mirror\/ant-design-5\/"/' mako.config.json
+          sed -i 's/manifest: {}/runtimePublicPath: {}, manifest: {basePath: "\/mirror\/ant-design-5\/",}, base: "\/mirror\/ant-design-5\/", publicPath: "\/mirror\/ant-design-5\/"/' ./ant-design/.dumirc.ts
+          sed -i 's/"devtool": false/"devtool": false,  "publicPath": "\/mirror\/ant-design-5\/"/' ./ant-design/mako.config.json
           
       - name: build site
-        run: bun run predeploy
+        run: cd ant-design && bun run predeploy
         env:
           NODE_OPTIONS: --max_old_space_size=4096
 
       - name: build dist and bundle analyzer report
-        run: bun run dist
+        run: cd ant-design && bun run dist
         env:
           ANALYZER: 1
           NODE_OPTIONS: --max_old_space_size=4096
 
       - name: move report.html to _site
         run: |
-          if [ -f report.html ]; then
-            mv report.html _site && echo "report.html moved to _site"
+          if [ -f ./ant-design/report.html ]; then
+            mv ./ant-design/report.html ./ant-design/_site && echo "report.html moved to _site"
           fi
 
       - name: replace path
         run: |
-          find ./_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/href="\//href="\/mirror\/ant-design-5\//g' {} +
-          find ./_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/src="\/umi/src="\/mirror\/ant-design-5\/umi/g' {} +
+          find ./ant-design/_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/href="\//href="\/mirror\/ant-design-5\//g' {} +
+          find ./ant-design/_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/src="\/umi/src="\/mirror\/ant-design-5\/umi/g' {} +
       - name: zip zite
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r ant-design-5.zip _site
+          args: zip -qq -r ant-design-5.zip ./ant-design/_site
 
       - name: Generate release tag
         id: tag
