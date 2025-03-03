@@ -24,16 +24,11 @@ jobs:
         run: |
           echo "release $(date +"%Y.%m.%d_%H_%M_%S")" >> ./release.md
 
-      - name: Merge from source branch
-        id: merge
-        uses: peter-evans/merge@v2
-        with:
-          repo: '${{ github.repository }}'
-          base: main # 目标分支，默认是main，请根据需要调整
-          head: main # 要合并进来的源分支，请替换为实际分支名
-          method: merge
-          commit-message: 'Merge branch source-branch into main' # 合并提交信息
-          git-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Enable Pull Request Automerge
+        run: gh pr merge --merge --auto "1"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: commit updated files
         uses: stefanzweifel/git-auto-commit-action@v5
