@@ -1,0 +1,81 @@
+name: ant-pro-components
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # ron on 7am every day
+  # Allows manual workflow run (must in default branch to work)
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  pro-components:
+    needs: ant-design-5
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+ 
+      - name: Modify release.md
+        run: |
+          echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" >> release.md
+          echo "This is an automatic update." >> release.md
+        
+      - name: Commit and push changes using EndBug/add-and-commit action
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'release.md'
+          message: 'Update release.md with new release notes'
+          author_name: 'github-actions'
+          author_email: 'github-actions@github.com'
+          commit_options: '--no-verify'
+          pull_strategy: NO-PULL
+
+      - name: Checkout mirror repo
+        run: |
+          git clone https://github.com/ant-design/pro-components.git --depth=1
+
+      - name: zip mirror repo source
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r pro-components-source.zip ./pro-components
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.4.1
+        with:
+          version: 8.12.1
+
+      - name: add content path
+        run: |
+          sed -i 's/});/manifest: {basePath: "\/mirror\/pro-components\/",}, base: "\/mirror\/pro-components\/", publicPath: "\/mirror\/pro-components\/"});/' ./pro-components/.dumirc.ts
+          
+      - name: build site
+        run: |
+          cd pro-components && pnpm install && pnpm run build && pnpm run dumi
+  
+      - name: zip zite
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r pro-components.zip ./pro-components/dist
+
+      - name: Generate release tag
+        id: tag
+        run: |
+          echo "::set-output name=release_tag::pro-components_$(date +"%Y.%m.%d_%H_%M_%S")"
+      - name: GH Release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          files: |
+            pro-components.zip
+            pro-components-source.zip
