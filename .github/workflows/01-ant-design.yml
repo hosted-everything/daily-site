@@ -22,20 +22,23 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Modify release.md
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        
+      - name: Pull latest changes
+        run: git pull origin main --rebase # 使用 rebase 来避免合并提交
+        
+      - name: Modify release.md and commit changes
         run: |
           echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" >> release.md
-          echo "This is an automatic update." >> release.md
-        
-      - name: Commit and push changes using EndBug/add-and-commit action
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: 'release.md'
-          message: 'Update release.md with new release notes'
-          author_name: 'github-actions'
-          author_email: 'github-actions@github.com'
-          commit_options: '--no-verify'
-          pull_strategy: NO-PULL
+          git add release.md
+          git commit -m "Update release.md" || echo "No changes to commit"
+          
+      - name: Push changes
+        run: git push origin HEAD:main || echo "Push skipped due to no changes or conflicts"
 
       - name: Checkout mirror repo
         run: |
