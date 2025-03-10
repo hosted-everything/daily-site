@@ -20,21 +20,22 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-      - name: modify commit id
-        run: |
-          echo "release $(date +"%Y.%m.%d_%H_%M_%S")" >> ./release.md
-
-      - name: Enable Pull Request Automerge
-        run: gh pr merge --merge --auto "1"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: commit updated files
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: checkout repository
+        uses: actions/checkout@v4
         with:
-          commit_message: 'new release via Github Actions'
-          branch: main
+          ref: ${{ github.head_ref }}
+
+      - name: Modify release.md
+        run: |
+          echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" >> release.md
+          echo "This is an automatic update." >> release.md
+        
+      - name: Commit and push changes
+        run: |
+          git pull
+          git add release.md
+          git commit -m "Update release.md"
+          git push
 
       - name: Checkout mirror repo
         run: |
