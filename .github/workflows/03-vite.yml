@@ -2,11 +2,17 @@ name: 03-vite
 
 on:
   schedule:
-    - cron: '0 7 * * *' # ron on 7am every day
-  # Allows manual workflow run (must in default branch to work)
+    - cron: '0 2 * * *' # ron on 2am every day
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/03-vite.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/03-vite.yml'
   workflow_dispatch:
 
 permissions:
@@ -53,9 +59,14 @@ jobs:
           args: zip -qq -r vite-source.zip ./vite
           
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.4.1
+        uses: pnpm/action-setup@v4.1.0
+
+      - name: Set node version to 20
+        uses: actions/setup-node@v4
         with:
-          version: 8.12.1
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+          cache: "pnpm"
 
       - name: add content path
         run: |

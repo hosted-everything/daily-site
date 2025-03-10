@@ -2,12 +2,19 @@ name: 01-ant-design
 
 on:
   schedule:
-    - cron: '0 7 * * *' # ron on 7am every day
-  # Allows manual workflow run (must in default branch to work)
+    - cron: '0 2 * * *' # ron on 2am every day
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/01-ant-design.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/01-ant-design.yml'
   workflow_dispatch:
+
 
 permissions:
   contents: write
