@@ -85,7 +85,7 @@ jobs:
           
       - name: build site
         run: |
-          cd vite && pnpm install && pnpm run site
+          cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run site
   
       - name: zip zite
         uses: montudor/action-zip@v1
