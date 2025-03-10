@@ -21,7 +21,8 @@ env:
   SOURCE_CODE_FILE_NAME: ant-design-vue-source.zip # 输出的ZIP文件名
   SITE_FILE_NAME: ant-design-vue.zip # 输出的ZIP文件名
   SITE_FOLDER_NAME: ./ant-design-vue/site/dist
-  
+  VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
+
 permissions:
   contents: write
   actions: write
@@ -48,7 +49,7 @@ jobs:
         
       - name: Modify release.md and commit changes
         run: |
-          echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" > release.md
+          echo "## New Release ${{ env.VERSION }}" > release.md
           git add release.md
           git commit -m "Update release.md" || echo "No changes to commit"
           
@@ -95,7 +96,7 @@ jobs:
       - name: Generate release tag
         id: tag
         run: |
-          echo "::set-output name=release_tag::vite_$(date +"%Y.%m.%d_%H_%M_%S")"
+          echo "::set-output name=release_tag::vite_${{ env.VERSION }}"
       - name: GH Release
         uses: softprops/action-gh-release@v0.1.15
         with:
