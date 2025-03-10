@@ -38,7 +38,8 @@ jobs:
           author_name: 'github-actions'
           author_email: 'github-actions@github.com'
           commit_options: '--no-verify'
-
+          pull_strategy: NO-PULL
+          
       - name: Checkout mirror repo
         run: |
           git clone https://github.com/ant-design/pro-components.git --depth=1
