@@ -27,12 +27,14 @@ jobs:
           echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" >> release.md
           echo "This is an automatic update." >> release.md
         
-      - name: Commit and push changes
-        run: |
-          git pull
-          git add release.md
-          git commit -m "Update release.md"
-          git push
+      - name: Commit and push changes using EndBug/add-and-commit action
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'release.md'
+          message: 'Update release.md with new release notes'
+          author_name: 'github-actions'
+          author_email: 'github-actions@github.com'
+          commit_options: '--no-verify'
 
       - name: Checkout mirror repo
         run: |
