@@ -42,7 +42,7 @@ jobs:
         
       - name: Modify release.md and commit changes
         run: |
-          echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" >> release.md
+          echo "## New Release $(date +"%Y.%m.%d_%H_%M_%S")" > release.md
           git add release.md
           git commit -m "Update release.md" || echo "No changes to commit"
           
@@ -68,7 +68,6 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-          cache: "pnpm"
 
       - name: add content path
         run: |
