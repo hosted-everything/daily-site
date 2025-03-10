@@ -96,7 +96,7 @@ jobs:
       - name: Generate release tag
         id: tag
         run: |
-          echo "::set-output name=release_tag::${{OUTPUT_DIR}}_${{ env.VERSION }}"
+          echo "::set-output name=release_tag::${{ env.OUTPUT_DIR }}_${{ env.VERSION }}"
       - name: GH Release
         uses: softprops/action-gh-release@v0.1.15
         with:
