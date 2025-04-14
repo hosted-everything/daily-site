@@ -81,7 +81,6 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/https:\/\/nervjs.github.io/.\//g' ./taro-docs/docusaurus.config.js
           sed -i 's/baseUrl\[BASE_DOMAIN\]/"\/mirror\/taro-docs"/g' ./taro-docs/docusaurus.config.js
           
       - name: build site
