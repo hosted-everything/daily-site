@@ -81,7 +81,7 @@ jobs:
         
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && pnpm install --frozen-lockfile --strict-peer-dependencies && pnpm run build:github
+          cd ${{ env.OUTPUT_DIR }} && pnpm install --frozen-lockfile --strict-peer-dependencies && cross-env NODE_OPTIONS=--max-old-space-size=20480 BASE=/mirror/taro-docs docusaurus build --out-dir build/taro-docs
   
       - name: zip zite
         uses: montudor/action-zip@v1
