@@ -72,7 +72,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.4.1
         with:
-          version: 8.12.1
+          version: 10.6.5
 
       - name: Set node version to 20
         uses: actions/setup-node@v4
