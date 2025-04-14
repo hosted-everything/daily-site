@@ -82,7 +82,7 @@ jobs:
 
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && npm run build:site
+          cd ${{ env.OUTPUT_DIR }} && npm install && npm run build:site
   
       - name: zip zite
         uses: montudor/action-zip@v1
