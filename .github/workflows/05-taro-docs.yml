@@ -1,0 +1,105 @@
+name: 05-taro-docs
+
+on:
+  schedule:
+    - cron: '30 2 * * *' # ron on 2am every day
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/05-taro-docs.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/05-taro-docs.yml'
+  workflow_dispatch:
+
+env:
+  REPO_URL: https://github.com/hosted-everything/taro-docs.git # 可以在外部通过secrets或workflow定义
+  OUTPUT_DIR: taro-docs # 克隆下来的目录名称
+  SOURCE_CODE_FILE_NAME: taro-docs-source.zip # 输出的ZIP文件名
+  SITE_FILE_NAME: taro-docs.zip # 输出的ZIP文件名
+  SITE_FOLDER_NAME: ./taro-docs/build/taro-docs
+  VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  check-out:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        
+      - name: Pull latest changes
+        run: git pull origin main --rebase # 使用 rebase 来避免合并提交
+        
+      - name: Modify release.md and commit changes
+        run: |
+          echo "## New Release ${{ env.VERSION }}" > release.md
+          git add release.md
+          git commit -m "Update release.md" || echo "No changes to commit"
+          
+      - name: Push changes
+        run: git push origin HEAD:main || echo "Push skipped due to no changes or conflicts"
+  build-sites:
+    needs: check-out
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout mirror repo
+        run: |
+          git clone ${{ env.REPO_URL }} --depth=1
+
+      - name: zip mirror repo source
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r ${{ env.SOURCE_CODE_FILE_NAME }} ./${{ env.OUTPUT_DIR }}
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.4.1
+        with:
+          version: 8.12.1
+
+      - name: Set node version to 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: add content path
+        run: |
+          sed -i 's/baseUrl[BASE_DOMAIN]/'/mirror/taro-docs'/g' ./taro-docs/docusaurus.config.js
+          
+      - name: build site
+        run: |
+          cd ${{ env.OUTPUT_DIR }} && pnpm install --frozen-lockfile --strict-peer-dependencies && pnpm run build:github
+  
+      - name: zip zite
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r ${{ env.SITE_FILE_NAME }} ${{ env.SITE_FOLDER_NAME }}
+
+      - name: Generate release tag
+        id: tag
+        run: |
+          echo "::set-output name=release_tag::${{ env.OUTPUT_DIR }}_${{ env.VERSION }}"
+      - name: GH Release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          files: |
+            ${{ env.SOURCE_CODE_FILE_NAME }}
+            ${{ env.SITE_FILE_NAME }}
