@@ -22,7 +22,7 @@ env:
   SITE_FILE_NAME: taro-docs.zip # 输出的ZIP文件名
   SITE_FOLDER_NAME: ./taro-docs/build/taro-docs
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
-  BASE: '/mirror/taro-docs'
+
 permissions:
   contents: write
   actions: write
@@ -78,10 +78,14 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-        
+
+      - name: add content path
+        run: |
+          sed -i 's/^BASE=taro$/BASE=\/mirror\/taro-docs/g' ./taro-docs/docusaurus.config.js
+          
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && pnpm install --frozen-lockfile --strict-peer-dependencies && cross-env NODE_OPTIONS=--max-old-space-size=20480 BASE=/mirror/taro-docs docusaurus build --out-dir build/taro-docs
+          cd ${{ env.OUTPUT_DIR }} && pnpm install --frozen-lockfile --strict-peer-dependencies && pnpm run build:github
   
       - name: zip zite
         uses: montudor/action-zip@v1
