@@ -1,27 +1,28 @@
-name: 04-ant-design-vue
+name: 05-taro-docs
 
 on:
   schedule:
-    - cron: '40 2 * * *' # ron on 2am every day
+    - cron: '0 1 * * *' # ron on 1am every day
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/04-ant-design-vue.yml'
+      - '.github/workflows/06-vant.yml'
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/04-ant-design-vue.yml'
+      - '.github/workflows/06-vant.yml'
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/vueComponent/ant-design-vue.git # 可以在外部通过secrets或workflow定义
-  OUTPUT_DIR: ant-design-vue # 克隆下来的目录名称
-  SOURCE_CODE_FILE_NAME: ant-design-vue-source.zip # 输出的ZIP文件名
-  SITE_FILE_NAME: ant-design-vue.zip # 输出的ZIP文件名
-  SITE_FOLDER_NAME: ./ant-design-vue/site/dist
+  REPO_URL: https://github.com/youzan/vant.git # 可以在外部通过secrets或workflow定义
+  OUTPUT_DIR: vant # 克隆下来的目录名称
+  SOURCE_CODE_FILE_NAME: vant-source.zip # 输出的ZIP文件名
+  SITE_FILE_NAME: vant.zip # 输出的ZIP文件名
+  SITE_FOLDER_NAME: ./vant/packages/vant/site-dist
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
+  PUBLIC_PATH: /mirror/vant
 
 permissions:
   contents: write
@@ -79,14 +80,9 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - name: add content path
-        run: |
-          sed -i 's/build site --base=https:\/\/next\.antdv\.com\//build site/g' ./ant-design-vue/package.json
-          sed -i 's/export default {/export default { base: "\/mirror\/ant-design-vue",/' ./ant-design-vue/site/vite.config.ts
-          
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && npm install --force && npm run site
+          cd ${{ env.OUTPUT_DIR }} && npm run build:site
   
       - name: zip zite
         uses: montudor/action-zip@v1
