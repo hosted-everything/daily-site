@@ -16,13 +16,13 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/hosted-everything/taro-docs.git # 可以在外部通过secrets或workflow定义
+  REPO_URL: https://github.com/NervJS/taro-docs.git # 可以在外部通过secrets或workflow定义
   OUTPUT_DIR: taro-docs # 克隆下来的目录名称
   SOURCE_CODE_FILE_NAME: taro-docs-source.zip # 输出的ZIP文件名
   SITE_FILE_NAME: taro-docs.zip # 输出的ZIP文件名
   SITE_FOLDER_NAME: ./taro-docs/build/taro-docs
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
-
+  BASE: '/mirror/taro-docs'
 permissions:
   contents: write
   actions: write
@@ -78,11 +78,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-
-      - name: add content path
-        run: |
-          sed -i 's/baseUrl[BASE_DOMAIN]/\'/mirror/taro-docs\'/g' ./taro-docs/docusaurus.config.js
-          
+        
       - name: build site
         run: |
           cd ${{ env.OUTPUT_DIR }} && pnpm install --frozen-lockfile --strict-peer-dependencies && pnpm run build:github
