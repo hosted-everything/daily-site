@@ -81,7 +81,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/^BASE=taro$/BASE=\/mirror\/taro-docs/g' ./taro-docs/docusaurus.config.js
+          sed -i 's/BASE=taro/BASE=\/mirror\/taro-docs/g' ./taro-docs/package.json
           
       - name: build site
         run: |
