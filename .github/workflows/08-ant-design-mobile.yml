@@ -82,7 +82,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/dynamicImport: {},/dynamicImport: {}, manifest: {basePath: "\/mirror\/ant-design-mobile\/",}, base: "\/mirror\/ant-design-mobile\/", publicPath: "\/mirror\/ant-design-mobile\/"/' ./config/config.ts
+          sed -i 's/dynamicImport: {},/dynamicImport: {}, manifest: {basePath: "\/mirror\/ant-design-mobile\/",}, base: "\/mirror\/ant-design-mobile\/", publicPath: "\/mirror\/ant-design-mobile\/"/' ./ant-design-mobile/config/config.ts
 
       - name: build site
         run: |
