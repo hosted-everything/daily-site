@@ -87,8 +87,7 @@ jobs:
       - name: build site
         run: |
           cd ${{ env.OUTPUT_DIR }} && pnpm run build && pnpm run deploy:docs
-        env:
-          NODE_OPTIONS: "--max_old_space_size=4096 --openssl-legacy-provider"
+
 
       - name: zip zite
         uses: montudor/action-zip@v1
