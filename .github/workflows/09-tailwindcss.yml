@@ -17,7 +17,7 @@ on:
 
 env:
   REPO_URL: https://github.com/tailwindlabs/tailwindcss.com.git # 可以在外部通过secrets或workflow定义
-  OUTPUT_DIR: tailwindcss # 克隆下来的目录名称
+  OUTPUT_DIR: tailwindcss.com # 克隆下来的目录名称
   SOURCE_CODE_FILE_NAME: tailwindcss-source.zip # 输出的ZIP文件名
   SITE_FILE_NAME: tailwindcss.zip # 输出的ZIP文件名
   SITE_FOLDER_NAME: ./tailwindcss/out
@@ -82,7 +82,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i "s/export default {/export default {\n  basePath: '\/mirror\/tailwindcss',\n  images: {\n    unoptimized: true,\n  },/" ./tailwindcss/next.config.mjs
+          sed -i "s/export default {/export default {\n  basePath: '\/mirror\/tailwindcss',\n  images: {\n    unoptimized: true,\n  },/" ./tailwindcss.com/next.config.mjs
 
       - name: build site
         run: |
