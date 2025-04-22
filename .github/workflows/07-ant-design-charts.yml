@@ -82,7 +82,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/scripts: \[\],/scripts: \[\], manifest: {basePath: "\/mirror\/ant-charts\/",}, base: "\/mirror\/ant-charts\/", publicPath: "\/mirror\/ant-charts\/"/' ./site/.dumirc.ts
+          sed -i 's/scripts: \[\],/scripts: \[\], manifest: {basePath: "\/mirror\/ant-charts\/",}, base: "\/mirror\/ant-charts\/", publicPath: "\/mirror\/ant-charts\/"/' ./ant-design-charts/site/.dumirc.ts
 
       - name: build site
         run: |
