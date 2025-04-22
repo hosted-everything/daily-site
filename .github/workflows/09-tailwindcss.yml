@@ -86,7 +86,7 @@ jobs:
 
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && npm run build
+          cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096 --openssl-legacy-provider"
 
