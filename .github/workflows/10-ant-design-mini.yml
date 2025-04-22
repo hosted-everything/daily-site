@@ -1,28 +1,28 @@
-name: 09-tailwindcss
+name: 10-ant-design-mini
 
 on:
   schedule:
-    - cron: '10 3 * * *' # ron on 3am every day
+    - cron: '20 3 * * *' # ron on 3am every day
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/09-tailwindcss.yml'
+      - '.github/workflows/10-ant-design-mini.yml'
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/09-tailwindcss.yml'
+      - '.github/workflows/10-ant-design-mini.yml'
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/tailwindlabs/tailwindcss.com.git # 可以在外部通过secrets或workflow定义
-  OUTPUT_DIR: tailwindcss.com # 克隆下来的目录名称
-  SOURCE_CODE_FILE_NAME: tailwindcss-source.zip # 输出的ZIP文件名
-  SITE_FILE_NAME: tailwindcss.zip # 输出的ZIP文件名
-  SITE_FOLDER_NAME: ./tailwindcss/out
+  REPO_URL: https://github.com/ant-design/ant-design-mini.git # 可以在外部通过secrets或workflow定义
+  OUTPUT_DIR: ant-design-mini # 克隆下来的目录名称
+  SOURCE_CODE_FILE_NAME: ant-design-mini-source.zip # 输出的ZIP文件名
+  SITE_FILE_NAME: ant-design-mini.zip # 输出的ZIP文件名
+  SITE_FOLDER_NAME: ./ant-design-mini/docs-dist
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
-  PUBLIC_PATH: /mirror/tailwindcss
+  PUBLIC_PATH: /mirror/ant-design-mini
 
 permissions:
   contents: write
@@ -77,16 +77,16 @@ jobs:
       - name: Set node version to 20
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 16
           registry-url: https://registry.npmjs.org/
 
       - name: add content path
         run: |
-          sed -i "s/export default {/export default {\n  basePath: '\/mirror\/tailwindcss',\n  images: {\n    unoptimized: true,\n  },/" ./tailwindcss.com/next.config.ts
+          sed -i "s/export default defineConfig({/export default defineConfig({ base: '\/mirror\/ant-design-mini\/',/" ./ant-design-mini/vite.config.ts
 
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && npm run build
+          cd ${{ env.OUTPUT_DIR }} && pnpm run build && pnpm run deploy:docs
         env:
           NODE_OPTIONS: "--max_old_space_size=4096 --openssl-legacy-provider"
 
