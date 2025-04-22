@@ -1,4 +1,4 @@
-name: 07-ant-design-charts
+name: 08-ant-design-mobile
 
 on:
   schedule:
@@ -7,22 +7,22 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/07-ant-design-charts.yml'
+      - '.github/workflows/08-ant-design-mobile.yml'
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/07-ant-design-charts.yml'
+      - '.github/workflows/08-ant-design-mobile.yml'
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/ant-design/ant-design-charts.git # 可以在外部通过secrets或workflow定义
-  OUTPUT_DIR: ant-design-charts # 克隆下来的目录名称
-  SOURCE_CODE_FILE_NAME: ant-design-charts-source.zip # 输出的ZIP文件名
-  SITE_FILE_NAME: ant-design-charts.zip # 输出的ZIP文件名
-  SITE_FOLDER_NAME: ./ant-design-charts/site/dist
+  REPO_URL: https://github.com/ant-design/ant-design-mobile.git # 可以在外部通过secrets或workflow定义
+  OUTPUT_DIR: ant-design-mobile # 克隆下来的目录名称
+  SOURCE_CODE_FILE_NAME: ant-design-mobile-source.zip # 输出的ZIP文件名
+  SITE_FILE_NAME: ant-design-mobile.zip # 输出的ZIP文件名
+  SITE_FOLDER_NAME: ./ant-design-mobile/site/dist
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
-  PUBLIC_PATH: /mirror/ant-design-charts
+  PUBLIC_PATH: /mirror/ant-design-mobile
 
 permissions:
   contents: write
@@ -82,11 +82,11 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/scripts: \[\],/scripts: \[\], manifest: {basePath: "\/mirror\/ant-design-charts\/",}, base: "\/mirror\/ant-design-charts\/", publicPath: "\/mirror\/ant-design-charts\/"/' ./ant-design-charts/site/.dumirc.ts
+          sed -i 's/dynamicImport: {},/dynamicImport: {}, manifest: {basePath: "\/mirror\/ant-design-mobile\/",}, base: "\/mirror\/ant-design-mobile\/", publicPath: "\/mirror\/ant-design-mobile\/"/' ./config/config.ts
 
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run build:lib && pnpm run build:site
+          cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run build-doc
   
       - name: zip zite
         uses: montudor/action-zip@v1
