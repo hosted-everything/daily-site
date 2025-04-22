@@ -82,7 +82,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i "s/export default {/export default {\n  basePath: '\/mirror\/tailwindcss',\n  images: {\n    unoptimized: true,\n  },/" ./tailwindcss.com/next.config.mjs
+          sed -i "s/export default {/export default {\n  basePath: '\/mirror\/tailwindcss',\n  images: {\n    unoptimized: true,\n  },/" ./tailwindcss.com/next.config.ts
 
       - name: build site
         run: |
