@@ -69,16 +69,17 @@ jobs:
         with:
           args: zip -qq -r ${{ env.SOURCE_CODE_FILE_NAME }} ./${{ env.OUTPUT_DIR }}
           
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.4.1
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          version: 10.6.5
+          node-version: '16'
 
-      - name: Set node version to 20
-        uses: actions/setup-node@v4
+      - name: Install pnpm
+        id: pnpm-install
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
+          version: 7
+          run_install: false
 
       - name: add content path
         run: |
