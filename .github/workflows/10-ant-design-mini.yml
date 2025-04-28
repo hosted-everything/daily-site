@@ -74,10 +74,10 @@ jobs:
         with:
           version: 10.6.5
 
-      - name: Set node version to 20
+      - name: Set node version to 18
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - name: add content path
@@ -86,7 +86,7 @@ jobs:
 
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run build && pnpm run deploy:docs
+          cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run build && gh-pages -d docs-dist
 
 
       - name: zip zite
