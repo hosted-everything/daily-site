@@ -20,7 +20,7 @@ env:
   OUTPUT_DIR: tailwindcss.com # 克隆下来的目录名称
   SOURCE_CODE_FILE_NAME: tailwindcss-source.zip # 输出的ZIP文件名
   SITE_FILE_NAME: tailwindcss.zip # 输出的ZIP文件名
-  SITE_FOLDER_NAME: ./tailwindcss/out
+  SITE_FOLDER_NAME: ./tailwindcss.com/out
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
   PUBLIC_PATH: /mirror/tailwindcss
 
