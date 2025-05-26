@@ -87,7 +87,7 @@ jobs:
 
       - name: build site
         run: |
-          cd ${{ env.OUTPUT_DIR }} && pnpm i && pnpm run docs:build
+          cd ${{ env.OUTPUT_DIR }} && pnpm i && pnpm run doc:build
 
 
       - name: zip zite
