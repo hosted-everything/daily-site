@@ -82,7 +82,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/defineConfig({/defineConfig({ manifest: {basePath: "\/mirror\/ant-pro-editor\/",}, base: "\/mirror\/ant-pro-editor\/", publicPath: "\/mirror\/ant-pro-editor\/",/' ./pro-editor/dumirc.ts
+          sed -i 's/defineConfig({/defineConfig({ manifest: {basePath: "\/mirror\/ant-pro-editor\/",}, base: "\/mirror\/ant-pro-editor\/", publicPath: "\/mirror\/ant-pro-editor\/",/' ./pro-editor/.dumirc.ts
 
       - name: build site
         run: |
