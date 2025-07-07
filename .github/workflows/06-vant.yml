@@ -22,7 +22,7 @@ env:
   SITE_FILE_NAME: vant.zip # 输出的ZIP文件名
   SITE_FOLDER_NAME: ./vant/packages/vant/site-dist
   VERSION: $(date +"%Y.%m.%d_%H_%M_%S")
-  PUBLIC_PATH: /mirror/vant
+  PUBLIC_PATH: "/mirror/vant"
 
 permissions:
   contents: write
@@ -80,6 +80,10 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
+      - name: change content path
+        run: |
+          sed -i 's#/vant/#/mirror/vant#g' ./vant/packages/vant/vant.config.mjs
+          
       - name: build site
         run: |
           cd ${{ env.OUTPUT_DIR }} && pnpm install && pnpm run build:site
