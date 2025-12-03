@@ -21,7 +21,7 @@ permissions:
   actions: write
 
 jobs:
-  ant-design-5:
+  ant-design-6:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
@@ -62,7 +62,7 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/manifest: {}/runtimePublicPath: {}, manifest: {basePath: "\/mirror\/ant-design-6\/",}, base: "\/mirror\/ant-design-6\/", publicPath: "\/mirror\/ant-design-5\/"/' ./ant-design/.dumirc.ts
+          sed -i 's/manifest: {}/runtimePublicPath: {}, manifest: {basePath: "\/mirror\/ant-design-6\/",}, base: "\/mirror\/ant-design-6\/", publicPath: "\/mirror\/ant-design-6\/"/' ./ant-design/.dumirc.ts
           sed -i 's/"devtool": false/"devtool": false,  "publicPath": "\/mirror\/ant-design-6\/"/' ./ant-design/mako.config.json
           
       - name: build site
@@ -89,12 +89,12 @@ jobs:
       - name: zip zite
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r ant-design-5.zip ./ant-design/_site
+          args: zip -qq -r ant-design-6.zip ./ant-design/_site
 
       - name: Generate release tag
         id: tag
         run: |
-          echo "::set-output name=release_tag::ant-design-5_$(date +"%Y.%m.%d_%H_%M_%S")"
+          echo "::set-output name=release_tag::ant-design-6_$(date +"%Y.%m.%d_%H_%M_%S")"
       - name: GH Release
         # You may pin to the exact commit or the version.
         # uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
@@ -102,5 +102,5 @@ jobs:
         with:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           files: |
-            ant-design-5.zip
+            ant-design-6.zip
             ant-design-source.zip
