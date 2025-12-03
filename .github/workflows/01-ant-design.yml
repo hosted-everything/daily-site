@@ -62,8 +62,8 @@ jobs:
 
       - name: add content path
         run: |
-          sed -i 's/manifest: {}/runtimePublicPath: {}, manifest: {basePath: "\/mirror\/ant-design-5\/",}, base: "\/mirror\/ant-design-5\/", publicPath: "\/mirror\/ant-design-5\/"/' ./ant-design/.dumirc.ts
-          sed -i 's/"devtool": false/"devtool": false,  "publicPath": "\/mirror\/ant-design-5\/"/' ./ant-design/mako.config.json
+          sed -i 's/manifest: {}/runtimePublicPath: {}, manifest: {basePath: "\/mirror\/ant-design-6\/",}, base: "\/mirror\/ant-design-6\/", publicPath: "\/mirror\/ant-design-5\/"/' ./ant-design/.dumirc.ts
+          sed -i 's/"devtool": false/"devtool": false,  "publicPath": "\/mirror\/ant-design-6\/"/' ./ant-design/mako.config.json
           
       - name: build site
         run: cd ant-design && bun run predeploy
@@ -84,8 +84,8 @@ jobs:
 
       - name: replace path
         run: |
-          find ./ant-design/_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/href="\//href="\/mirror\/ant-design-5\//g' {} +
-          find ./ant-design/_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/src="\/umi/src="\/mirror\/ant-design-5\/umi/g' {} +
+          find ./ant-design/_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/href="\//href="\/mirror\/ant-design-6\//g' {} +
+          find ./ant-design/_site -type f \( -name "*.html" -or -name "*.js" \) -exec sed -i 's/src="\/umi/src="\/mirror\/ant-design-6\/umi/g' {} +
       - name: zip zite
         uses: montudor/action-zip@v1
         with:
